@@ -34,9 +34,9 @@ public class WordCount {
 
 				fileScan.skip("[ \n]*");
 
-				//sentences
+				// sentences
 				String currentLine = fileScan.nextLine();
-				
+
 				if (currentLine.contains(".")) {
 					sentenceCounter++;
 				} else if (currentLine.contains("!")) {
@@ -44,30 +44,34 @@ public class WordCount {
 				} else if (currentLine.contains("?")) {
 					sentenceCounter++;
 				}
-				
-				
-				//words
-				String[] wordsOnLine = currentLine.split("\\s+");
-				String[] specialChar = new String[]{"0","1","2","3","4","5","6","7","8","9","*","http","www"};
-			
-				
-				int numbersInLine = 0;
 
+				// words
+				String[] wordsOnLine = currentLine.split("\\s+");
+				String[] specialChar = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "http",
+						"www"};
+
+				int numbersInLine = 0;
+				
+				for(int i = 0; i < wordsOnLine.length; i++) {
+					if (wordsOnLine[i].isEmpty()) {
+						numbersInLine++;
+					}
+				}
+				
 				for (String s : wordsOnLine) {
-					for (String i: specialChar) {
-						if(s.contains(i)) {
+					for (String i : specialChar) {
+						if (s.contains(i)) {
 							numbersInLine++;
 						}
 					}
 					
-					
-
-				}
+					}
+				
 				wordCount = wordCount + wordsOnLine.length - numbersInLine;
 			}
 
 			System.out.println(wordCount);
-			
+
 			System.out.println(sentenceCounter);
 
 		} catch (Exception e) {
