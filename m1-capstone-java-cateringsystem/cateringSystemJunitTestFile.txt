@@ -1,0 +1,18 @@
+B1|Monster Energy|1.50|B
+B2|Wine|3.05|B
+B3|BBQ Thigh|2.55|B
+B4|Dirty Water|2.35|B
+B5|Punch In The Face|0.90|B
+A1|Da Fruit Bowl|3.50|A
+A2|All The Meat|2.95|A
+A3|Bacon Shrimpies|4.15|A
+A4|Bruh Food|2.65|A
+E1|Chicky Wings|8.85|E
+E2|Pork Tail|9.45|E
+E3|Really Good Beer|11.65|E
+E4|Gravy Boat|5.15|E
+D1|NY Style Cheese|2.55|D
+D2|Yummy Cake|1.80|D
+D3|Good Brownies|1.10|D
+D4|Jolly Rancher|0.85|D
+D5|Cherry Pie|2.50|D
