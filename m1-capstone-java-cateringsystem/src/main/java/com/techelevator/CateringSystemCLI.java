@@ -40,20 +40,15 @@ public class CateringSystemCLI {
 			String choice = menu.printMainMenu();
 			
 			if (choice.equals(Display_Catering_Items)) {
-				System.out.println("");
-				System.out.println("----------------------------------------------------");
-				System.out.println("You chose to display catering items (please appreciate how hard this was to do): ");
-				System.out.println("----------------------------------------------------");
-				System.out.println("");
 				
 				appService.printMenu();
 				
-				System.out.println("");
-				System.out.println("----------------------------------------------------");
 
 			}
 			else if (choice.equals(Order)) {
 				//TODO - Load subMenu
+				while (appService.subMenuOptions(menu.printSubMenu(dude)) == false ) {
+					
 				System.out.println("");
 				System.out.println("----------------------------------------------------");
 				System.out.println("You chose to Order items (I'm slowly dying inside): ");
@@ -64,7 +59,7 @@ public class CateringSystemCLI {
 				
 				System.out.println("");
 				System.out.println("----------------------------------------------------");
-				
+				}
 				//logic for what they choose
 				//call to appService to execute methods based on action.
 			}

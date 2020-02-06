@@ -7,9 +7,9 @@ import java.util.Scanner;
 public class AppService {
 	
 	public AppService(Customer customer) {
-		this.customer = customer;
+		this.appServCustomer = customer;
 	}
-	Customer customer;
+	Customer appServCustomer;
 	
 	Scanner appServiceScanner = new Scanner (System.in);
 	
@@ -19,21 +19,52 @@ public class AppService {
 
 	public void printMenu() {
 		// System.out.println("Please work");
+		System.out.println("");
+		System.out.println("----------------------------------------------------");
+		System.out.println("You chose to display catering items (please appreciate how hard this was to do): ");
+		System.out.println("----------------------------------------------------");
+		System.out.println("");
+		
 		for (String key : masterInventory.keySet()) {
 			String[] values = masterInventory.get(key);
 			System.out.println(values[0] + "   " + values[1]);
 			// TODO: format all nice like
-
 		}
-
+		System.out.println("");
+		System.out.println("----------------------------------------------------");
 	}
 
-	public void subMenuOptions(String subMenuInput) {
+	
+	public boolean subMenuOptions(String subMenuInput) {
+		//adding money
+		boolean exitSubMenu = false;
+		//Adding money
 		if(subMenuInput.equals("1")) {
-			System.out.println("You chose Add Money. How much, bitch?:");
-			int addAmount = Integer.parseInt(appServiceScanner.nextLine());
-			customer.addMoney(addAmount);
-			System.out.println(customer.getCurrentAccountBalance());
+			appServCustomer.addMoney();
+			System.out.println(appServCustomer.getCurrentAccountBalance());
+			return exitSubMenu;
+		}//Selecting Products
+		else if (subMenuInput.equals("2")) {
+			//TODO: select products
+			
+			return exitSubMenu;
+		}//complete transaction
+		else if (subMenuInput.equals("3")) {
+			//TODO: Checkout
+			
+			
+			return exitSubMenu;
+		}//back to menu
+		else if (subMenuInput.equals("4")) {
+			return exitSubMenu = true;
+		}//wrong input
+		else {
+			System.out.println("WTF are you doing. Use the prompts idiot.");
+			return exitSubMenu;
 		}
+		
+		
+		
+		
 	}
 }
