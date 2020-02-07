@@ -58,6 +58,10 @@ public class AppService {
 			} // complete transaction
 			else if (subMenuInput.equals("3")) {
 				// TODO: Checkout
+			
+				appServWallet.checkOut();
+				
+				
 				exitSubMenu = false;
 			} // back to menu
 			else if (subMenuInput.equals("4")) {
@@ -73,14 +77,29 @@ public class AppService {
 		boolean selectionExit = false;
 		while (selectionExit == false) {
 			boolean wrongInputConfirmation = true;
-			
+
 			displayCateringItems();
 			System.out.println("Please select item ID or exit:");
 			String userSelection = appServiceScanner.nextLine();
-			
+
 			if (userSelection.equalsIgnoreCase("exit")) {
-				appServWallet.clearCart();
+				
+				
+				boolean yornLoop = false;
+				while (yornLoop == false) {
+					System.out.println("Would you like to clear your cart? Y or N");
+					String clearYorN = appServiceScanner.nextLine();
+					if (clearYorN.equalsIgnoreCase("Y")) {
+						appServWallet.clearCart();
+						yornLoop = true;
+					} else if (clearYorN.equalsIgnoreCase("N")) {
+						yornLoop = true;
+					} else {
+						System.out.println("What are you even doing?");
+					}
+				}
 				break;
+
 			}
 			System.out.println("How many would you like?");
 			int selectionQuantity = Integer.parseInt(appServiceScanner.nextLine());
@@ -96,10 +115,12 @@ public class AppService {
 					break;
 				}
 			}
-						if (wrongInputConfirmation == true) {
+			if (wrongInputConfirmation == true) {
 				System.out.println("Try again idiot!");
 			}
 		}
 	}
 
+	
+	
 }

@@ -8,13 +8,13 @@ import java.util.Scanner;
 
 public class Wallet {
 
-	//	private List<Product> cartList = new ArrayList<Product>();
+	// private List<Product> cartList = new ArrayList<Product>();
 	public Map<Product, Integer> cartMap = new HashMap<Product, Integer>();
 	private Scanner customerScanner = new Scanner(System.in);
 	private float currentAccountBalance = 0.00f;
-	
-	//CONSTRUCTOR
-	
+
+	// CONSTRUCTOR
+
 	public float getCurrentAccountBalance() {
 		return currentAccountBalance;
 	}
@@ -25,15 +25,12 @@ public class Wallet {
 		System.out.println("You chose Add Money. How much?: ");
 		int inputMoney = Integer.parseInt(customerScanner.nextLine());
 
-		if(currentAccountBalance + inputMoney >5000) {
+		if (currentAccountBalance + inputMoney > 5000) {
 			System.out.println("Yo, dawg wtf are you doing. thats so much money. chill.");
-		}else {
+		} else {
 			currentAccountBalance += inputMoney;
 		}
-		
-		
-		
-		
+
 		return currentAccountBalance;
 		// TODO: subtract checkout total from balance
 		// TODO: make sure balance is greater than checkout total
@@ -45,7 +42,7 @@ public class Wallet {
 		} else if (cartMap.containsKey(productToAdd)) {
 //			
 			productToAdd.subtractFromCurrentQuantity(amount);
-			amount =  amount;
+			amount = amount;
 			cartMap.put(productToAdd, amount);
 		} else {
 			cartMap.put(productToAdd, new Integer(amount));
@@ -53,26 +50,35 @@ public class Wallet {
 		}
 
 	}
+
 	public void removeFromCart() {
 
-		
-		
 	}
 
 	public void clearCart() {
-		for (Product p : cartMap.keySet()){
+		for (Product p : cartMap.keySet()) {
 			p.setQuantity(50);
 		}
 		cartMap.clear();
 	}
-	
-	
-	public void checkOut() {
 
-		
-		
-		
-		
+	public void checkOut() {
+		if (getCurrentAccountBalance() < getCartTotalDollarAmount()) {
+			System.out.println("lol sike, broke turd (add more money or subtract from cart");
+		} else {
+//			TransactionReport receipt = new TransactionReport();
+//			receipt.transactionReport();
+			float changeReturned = getCurrentAccountBalance() - getCartTotalDollarAmount();
+			currentAccountBalance = 0;
+			for (Product p : cartMap.keySet()) {
+
+				System.out.println(String.format("%-5s %-5s %-15s %-5s %-5s", cartMap.get(p), p.getType(), p.getName(),
+						p.getPrice(), (p.getPrice() * cartMap.get(p))));
+			}
+			System.out.println(getCartTotalDollarAmount());
+			System.out.println(changeReturned);
+		}
+
 	}
 
 	public void getCartContents() {
@@ -82,39 +88,15 @@ public class Wallet {
 			System.out.println(p.getQuantity() + " " + p.getName() + "(s) left in stock");
 		}
 		System.out.println(getCartTotalDollarAmount());
-		
+
 	}
 
 	private float getCartTotalDollarAmount() {
 		float currentCartTotal = 0.00f;
 		for (Product p : cartMap.keySet()) {
-			currentCartTotal = currentCartTotal + (p.getPrice() * (float)cartMap.get(p));
+			currentCartTotal = currentCartTotal + (p.getPrice() * (float) cartMap.get(p));
 		}
 		return currentCartTotal;
 	}
-	
-	
-		//NOT IN USE CURRENTLY
-	/*
-	private void getCartProductQuantity() {
 
-		for (Product p : cartList) {
-			String productName = p.getName();
-			int quantityInCart = 1;
-
-			for (Product i : cartList) {
-				if (p.getId().equalsIgnoreCase(i.getId())) {
-					quantityInCart++;
-				}
-			}
-		}
-	}
-	*/
-	
-	
-	
-	
-	
-	
-	
 }
