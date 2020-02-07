@@ -2,7 +2,9 @@ package com.techelevator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -17,6 +19,38 @@ public class CateringInventory {
 //	}
 	
 	
+	public List<Product> generateInventory(String inventoryListName) {
+
+		File inventoryFile = new File(inventoryListName);
+
+		List<Product> inventoryList = new ArrayList<Product>();
+
+		try(Scanner inventoryScanner = new Scanner(inventoryFile)) {
+			
+
+			while (inventoryScanner.hasNextLine()) {
+				
+				String currentLine = inventoryScanner.nextLine();
+				String[] currentLineArray = currentLine.split("\\|");
+				
+				Product product = new Product();
+				product.setId(currentLineArray[0]);
+				product.setName(currentLineArray[1]);
+				product.setPrice(Float.parseFloat(currentLineArray[2]));
+				product.setType(currentLineArray[3]);
+
+				inventoryList.add(product);
+				}
+				
+			
+		} catch (FileNotFoundException e) {
+		}
+
+
+		return inventoryList;
+	}
+
+	/*
 	public Map<String, String[]> generateInventory(String inventoryListName) {
 
 		File inventoryFile = new File(inventoryListName);
@@ -44,4 +78,8 @@ public class CateringInventory {
 		return inventoryMap;
 	}
 
+	
+	*/
+	
+	
 }

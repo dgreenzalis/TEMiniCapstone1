@@ -18,12 +18,20 @@ public class OurMenu {
 	public String printSubMenu(Customer addCustomer) {
 		//TODO: use super for this constructor?
 		
+		System.out.println("");
+		System.out.println("----------------------------------------------------");
+		System.out.println("You chose to Order items (I'm slowly dying inside): ");
+		System.out.println("----------------------------------------------------");
+		System.out.println("");
+		
 		System.out.println("(1) Add Money");
 		System.out.println("(2) Select Products");
 		System.out.println("(3) Complete Transaction");
 		System.out.println("(4) Back to Main Menu");
 		System.out.println("Current Balance: $" + addCustomer.getCurrentAccountBalance()); //TODO - Insert account balance later.
 		
+		System.out.println("");
+		System.out.println("----------------------------------------------------");
 		return inputScanner.nextLine();
 	}
 

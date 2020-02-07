@@ -1,8 +1,12 @@
 package com.techelevator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Customer {
+	
+	List<Product> cartList = new ArrayList<Product>();
 
 	Scanner customerScanner = new Scanner(System.in);
 	
@@ -20,9 +24,14 @@ public class Customer {
 		
 		currentAccountBalance += inputMoney;
 		return currentAccountBalance;
-	}
-	
 	//TODO: subtract checkout total from balance
 		//TODO: make sure balance is greater than checkout total
+	}
+	
+	public List<Product> addToCart(String productId){
+		
+		
+		return cartList;
+	}
 	
 }
