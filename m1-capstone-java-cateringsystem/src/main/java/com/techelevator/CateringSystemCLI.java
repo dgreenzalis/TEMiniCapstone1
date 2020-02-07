@@ -40,36 +40,19 @@ public class CateringSystemCLI {
 			String choice = menu.printMainMenu();
 			
 			if (choice.equals(Display_Catering_Items)) {
-				
 				appService.displayCateringItems();
-				
-
 			}
 			else if (choice.equals(Order)) {
-				//TODO - Load subMenu
-				while (appService.subMenuOptions(menu.printSubMenu(dude)) == false ) {
-					
-			
 				
-				appService.subMenuOptions(menu.printSubMenu(dude));
-				
-				
-				}
-				//logic for what they choose
-				//call to appService to execute methods based on action.
+					appService.subMenuOptions();
 			}
-			
 			else if (choice.equals(Quit)) {
 				System.exit(0);
 			}
-			
 			else {
 				System.out.println("Invalid entry. Please re-enter.");
 			}
-			/*
-			Display the Starting Menu 
 
-			*/
 		}
 	}
 

@@ -7,20 +7,16 @@ import java.util.Scanner;
 
 public class AppService {
 
-	public AppService() {
-	}
-
 	public AppService(Customer customer) {
 		this.appServCustomer = customer;
 	}
 
-	Customer appServCustomer;
-
-	Scanner appServiceScanner = new Scanner(System.in);
-
-	CateringInventory cateringInventory = new CateringInventory();
-
-	List<Product> masterInventory = cateringInventory.generateInventory("cateringSystemJunitTestFile.txt");
+	private Customer appServCustomer;
+	private Scanner appServiceScanner = new Scanner(System.in);
+	private CateringInventory cateringInventory = new CateringInventory();
+	// load file in constructor
+	private List<Product> masterInventory = cateringInventory.generateInventory("cateringSystemJunitTestFile.txt");
+	private OurMenu menu = new OurMenu();
 
 	public void displayCateringItems() {
 		// System.out.println("Please work");
@@ -38,53 +34,59 @@ public class AppService {
 		System.out.println("----------------------------------------------------");
 	}
 
-	public boolean subMenuOptions(String subMenuInput) {
-		// adding money
-		boolean exitSubMenu = false;
-		// Adding money
-		if (subMenuInput.equals("1")) {
-			appServCustomer.addMoney();
-			System.out.println(appServCustomer.getCurrentAccountBalance());
-			return exitSubMenu;
-		}
+	public void subMenuOptions() {
 
-		// Selecting Products
-		else if (subMenuInput.equals("2")) {
-			// TODO: select products
-			boolean backToMainMenu = false;
-			boolean selectionExit = false;
-			while (backToMainMenu == false)
-			while (selectionExit == false) {
-				displayCateringItems();
-				System.out.println("Please select item ID or exit:");
-				String userSelection = appServiceScanner.nextLine();
-				for (Product p : masterInventory) {
-					if (userSelection.equals(p.getId())) {
-						System.out.println(p.getName() + " ADDED");
-						selectionExit = true;
-					}else if (userSelection.equals("exit")) {
-						backToMainMenu = true;
-					}else {
-						System.out.println("Try again idiot!");
-					}
-					
-				}
+		boolean exitSubMenu = false;
+		while (exitSubMenu == false) {
+
+			String subMenuInput = menu.printSubMenu(appServCustomer);
+			// Adding money
+			if (subMenuInput.equals("1")) {
+				appServCustomer.addMoney();
+				System.out.println(appServCustomer.getCurrentAccountBalance());
+				exitSubMenu = false;
 			}
 
-			return exitSubMenu;
-		} // complete transaction
-		else if (subMenuInput.equals("3")) {
-			// TODO: Checkout
-
-			return exitSubMenu;
-		} // back to menu
-		else if (subMenuInput.equals("4")) {
-			return exitSubMenu = true;
-		} // wrong input
-		else {
-			System.out.println("WTF are you doing. Use the prompts idiot.");
-			return exitSubMenu;
+			// Selecting Products
+			else if (subMenuInput.equals("2")) {
+				// TODO: add items to cart
+				selectItems();
+				exitSubMenu = false;
+			} // complete transaction
+			else if (subMenuInput.equals("3")) {
+				// TODO: Checkout
+				exitSubMenu = false;
+			} // back to menu
+			else if (subMenuInput.equals("4")) {
+				exitSubMenu = true;
+			} // wrong input
+			else {
+				System.out.println("WTF are you doing. Use the prompts idiot.");
+			}
 		}
-
 	}
+
+	private void selectItems() {
+		boolean selectionExit = false;
+		while (selectionExit == false) {
+			boolean wrongInputConfirmation = true;
+			displayCateringItems();
+			System.out.println("Please select item ID or exit:");
+			String userSelection = appServiceScanner.nextLine();
+			for (Product p : masterInventory) {
+				if (userSelection.equals(p.getId())) {
+					System.out.println(p.getName() + " ADDED");
+					wrongInputConfirmation = false;
+					break;
+				} else if (userSelection.contentEquals("exit")) {
+					selectionExit = true;
+					wrongInputConfirmation = false;
+				}
+			}
+			if (wrongInputConfirmation == true) {
+				System.out.println("Try again idiot!");
+			}
+		}
+	}
+
 }

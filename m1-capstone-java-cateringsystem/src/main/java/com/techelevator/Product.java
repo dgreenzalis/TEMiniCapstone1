@@ -7,6 +7,7 @@ public class Product {
 	private float price;
 	private String type;
 	
+	private int quantity = 50;
 	
 	//Getters && Setters
 	

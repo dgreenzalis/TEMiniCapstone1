@@ -6,12 +6,13 @@ import java.util.Scanner;
 
 public class Customer {
 	
-	List<Product> cartList = new ArrayList<Product>();
-
-	Scanner customerScanner = new Scanner(System.in);
+	private List<Product> cartList = new ArrayList<Product>();
+	private Scanner customerScanner = new Scanner(System.in);
 	
-	public Double currentAccountBalance = 0.00;
+	private Double currentAccountBalance = 0.00;
 
+	
+	
 	public Double getCurrentAccountBalance() {
 		return currentAccountBalance;
 	}
@@ -28,10 +29,16 @@ public class Customer {
 		//TODO: make sure balance is greater than checkout total
 	}
 	
-	public List<Product> addToCart(String productId){
+	public void addToCart(String productId){
 		
+	}
+	
+	public void removeFromCart() {
 		
-		return cartList;
+	}
+	
+	public void checkOut() {
+		
 	}
 	
 }
