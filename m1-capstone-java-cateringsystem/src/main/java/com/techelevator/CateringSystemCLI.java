@@ -17,10 +17,10 @@ public class CateringSystemCLI {
 	private final static String Complete_Transaction= "3";
 	
 	
-	private Customer dude = new Customer();
+	private Wallet mainWallet = new Wallet();
 	
 	private OurMenu menu;
-	private AppService appService = new AppService(dude);
+	private AppService appService = new AppService("cateringsystem.csv");
 	
 	
 	public CateringSystemCLI(OurMenu menu) {

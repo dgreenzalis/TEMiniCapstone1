@@ -15,7 +15,7 @@ public class OurMenu {
 		return inputScanner.nextLine();
 	}
 	
-	public String printSubMenu(Customer addCustomer) {
+	public String printSubMenu(Wallet wallet) {
 		//TODO: use super for this constructor?
 		
 		System.out.println("");
@@ -28,7 +28,7 @@ public class OurMenu {
 		System.out.println("(2) Select Products");
 		System.out.println("(3) Complete Transaction");
 		System.out.println("(4) Back to Main Menu");
-		System.out.println("Current Balance: $" + addCustomer.getCurrentAccountBalance()); //TODO - Insert account balance later.
+		System.out.println("Current Balance: $" + wallet.getCurrentAccountBalance()); //TODO - Insert account balance later.
 		
 		System.out.println("");
 		System.out.println("----------------------------------------------------");

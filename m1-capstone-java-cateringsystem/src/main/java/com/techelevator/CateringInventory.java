@@ -46,7 +46,6 @@ public class CateringInventory {
 		} catch (FileNotFoundException e) {
 		}
 
-
 		return inventoryList;
 	}
 

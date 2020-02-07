@@ -9,6 +9,7 @@ public class Product {
 	
 	private int quantity = 50;
 	
+	
 	//Getters && Setters
 	
 	public String getId() {
@@ -35,7 +36,24 @@ public class Product {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+	public String getQuantityToDisplay() {
+		String quantityString = Integer.toString(quantity);
+		if(quantity < 1) {
+			quantityString = "SOLD OUT";
+		}
+		return  quantityString;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public void subtractFromCurrentQuantity(int subtractAmount) {
+		this.quantity -= subtractAmount;
+		
+	}
+	public int getQuantity() {
+		
+		return quantity;
+	}
 	
 
 }

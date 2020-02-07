@@ -13,8 +13,8 @@ import org.junit.Assert;   //Use this one...
 
 public class CustomerBalanceTest {
 
-	Customer testDude = new Customer();
-	AppService appService = new AppService(testDude);
+	Wallet testDude = new Wallet();
+//	AppService appService = new AppService(testDude);
 	
 	@Test
 	public void testForDudesBalance() {
