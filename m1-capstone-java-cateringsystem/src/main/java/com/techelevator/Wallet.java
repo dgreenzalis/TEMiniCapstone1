@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ public class Wallet {
 	public Map<Product, Integer> cartMap = new HashMap<Product, Integer>();
 	private Scanner customerScanner = new Scanner(System.in);
 	private float currentAccountBalance = 0.00f;
+	private AuditLog appServAuditLog = new AuditLog();
 
 	// CONSTRUCTOR
 
@@ -19,7 +21,7 @@ public class Wallet {
 		return currentAccountBalance;
 	}
 
-	public float addMoney() {
+	public float addMoney() throws IOException {
 		// TODO: limit input to $5000
 
 		System.out.println("You chose Add Money. How much?: ");
@@ -29,6 +31,7 @@ public class Wallet {
 			System.out.println("Yo, dawg wtf are you doing. thats so much money. chill.");
 		} else {
 			currentAccountBalance += inputMoney;
+			appServAuditLog.logAddMoney(inputMoney, currentAccountBalance);
 		}
 
 		return currentAccountBalance;
@@ -63,20 +66,25 @@ public class Wallet {
 	}
 
 	public void checkOut() {
-		if (getCurrentAccountBalance() < getCartTotalDollarAmount()) {
+		if (currentAccountBalance < getCartTotalDollarAmount()) {
 			System.out.println("lol sike, broke turd (add more money or subtract from cart");
 		} else {
-//			TransactionReport receipt = new TransactionReport();
-//			receipt.transactionReport();
-			float changeReturned = getCurrentAccountBalance() - getCartTotalDollarAmount();
-			currentAccountBalance = 0;
+			float changeReturned = currentAccountBalance - getCartTotalDollarAmount();
+			
+			float tempCurrentAccountBal = currentAccountBalance;
+			
 			for (Product p : cartMap.keySet()) {
-
 				System.out.println(String.format("%-5s %-5s %-15s %-5s %-5s", cartMap.get(p), p.getType(), p.getName(),
 						p.getPrice(), (p.getPrice() * cartMap.get(p))));
+				tempCurrentAccountBal = tempCurrentAccountBal - (p.getPrice() * cartMap.get(p));
+				appServAuditLog.logItemPurchased(cartMap.get(p), p.getName(), p.getId(),
+						(p.getPrice() * cartMap.get(p)), tempCurrentAccountBal);
 			}
+			
+			currentAccountBalance = 0;
+			appServAuditLog.logGivingChange(changeReturned, currentAccountBalance);
 			System.out.println(getCartTotalDollarAmount());
-			System.out.println(changeReturned);
+			System.out.println("Your change for this transaction is: " + changeReturned);
 		}
 
 	}

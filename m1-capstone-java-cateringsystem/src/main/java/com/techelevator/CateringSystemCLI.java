@@ -1,5 +1,7 @@
 package com.techelevator;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 import com.techelevator.view.Menu;
@@ -21,19 +23,21 @@ public class CateringSystemCLI {
 	
 	private OurMenu menu;
 	private AppService appService = new AppService("cateringsystem.csv");
-	
+	private AuditLog auditLog = new AuditLog();
 	
 	public CateringSystemCLI(OurMenu menu) {
 		this.menu = menu;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		OurMenu menu = new OurMenu();
 		CateringSystemCLI cli = new CateringSystemCLI(menu);
 		cli.run();
 	}	
 
-	public void run() {
+	public void run() throws IOException {
+		
+		auditLog.initiateAuditLog("CLI-Audit");
 		
 		while (true) {
 		
