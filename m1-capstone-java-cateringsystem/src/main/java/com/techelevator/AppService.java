@@ -43,8 +43,10 @@ public class AppService {
 			String subMenuInput = menu.printSubMenu(appServWallet);
 			// Adding money
 			if (subMenuInput.equals("1")) {
-				appServWallet.addMoney();
-				System.out.println(appServWallet.getCurrentAccountBalance());
+				System.out.println("You chose Add Money. How much?: ");
+				String inputString = appServiceScanner.nextLine();
+				appServWallet.addMoney(inputString);
+				System.out.println("$" + appServWallet.getCurrentAccountBalance());
 				exitSubMenu = false;
 			}
 			// Selecting Products
@@ -116,8 +118,11 @@ public class AppService {
 					if (userSelection.equalsIgnoreCase(p.getId())) {
 						System.out.println(p.getName() + " ADDED");
 						// add to cart
+						System.out.println("");
+						System.out.println("Items in cart:");
 						appServWallet.addToCart(p, selectionQuantity);
 						appServWallet.getCartContents();
+						
 						break;
 					} 
 				}

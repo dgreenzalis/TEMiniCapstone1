@@ -1,6 +1,8 @@
 package com.techelevator;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,24 +21,38 @@ public class Wallet {
 		return currentAccountBalance;
 	}
 
-	public float addMoney() throws IOException {
+//	public static class InputOutPut{
+//		private final Scanner diScanner;
+//		private final PrintStream diOutput;
+//		
+//		public InputOutPut(InputStream in, PrintStream out) {
+//			this.diScanner = new Scanner(in);
+//			this.diOutput = out;
+//		}
+//		
+//		public int ask (String message) {
+//			diOutput.println(message);
+//			return diScanner.nextInt();
+//		}
+//	}
 
-		System.out.println("You chose Add Money. How much?: ");
-		String inputString = customerScanner.nextLine();
+	public float addMoney(String inputString) throws IOException {
+
+//		System.out.println("You chose Add Money. How much?: ");
+//		String inputString = customerScanner.nextLine();
 
 		try {
 			int inputMoney = Integer.parseInt(inputString);
-			if(inputMoney < 0) {
+			if (inputMoney < 0) {
 				System.out.println("Can't go negative dawg.");
-				
-			}else if (currentAccountBalance + inputMoney > 5000) {
+
+			} else if (currentAccountBalance + inputMoney > 5000) {
 				System.out.println("Yo, dawg wtf are you doing. thats so much money. chill.");
 			} else {
 				currentAccountBalance += inputMoney;
 				appServAuditLog.logAddMoney(inputMoney, currentAccountBalance);
 			}
-		}
-		catch (NumberFormatException ex) {
+		} catch (NumberFormatException ex) {
 			System.out.println("Those are some mighty weird numbers you're using, try again!");
 		}
 		return currentAccountBalance;
@@ -54,7 +70,6 @@ public class Wallet {
 			cartMap.put(productToAdd, new Integer(amount));
 			productToAdd.subtractFromCurrentQuantity(amount);
 		}
-
 	}
 
 	public void removeFromCart() {
@@ -73,33 +88,47 @@ public class Wallet {
 			System.out.println("lol sike, broke turd (add more money or subtract from cart");
 		} else {
 			float changeReturned = currentAccountBalance - getCartTotalDollarAmount();
-
 			float tempCurrentAccountBal = currentAccountBalance;
-
 			for (Product p : cartMap.keySet()) {
-				System.out.println(String.format("%-5s %-5s %-15s %-5s %-5s", cartMap.get(p), p.getType(), p.getName(),
-						p.getPrice(), (p.getPrice() * cartMap.get(p))));
+				String pType = "";
+				if (p.getType().contentEquals("E")) {
+					pType = "Entree";
+				} else if (p.getType().contentEquals("B")) {
+					pType = "Beverage";
+				} else if (p.getType().contentEquals("A")) {
+					pType = "Appetizer";
+				} else if (p.getType().contentEquals("D")) {
+					pType = "Dessert";
+				}
+				System.out.println(String.format("%-5s %-5s %-15s %-5s %-5s", cartMap.get(p), pType, p.getName(),
+						"$" + p.getPrice(), "$" + (String.format("%.2f", (p.getPrice() * cartMap.get(p))))));
+
 				tempCurrentAccountBal = tempCurrentAccountBal - (p.getPrice() * cartMap.get(p));
+
 				appServAuditLog.logItemPurchased(cartMap.get(p), p.getName(), p.getId(),
 						(p.getPrice() * cartMap.get(p)), tempCurrentAccountBal);
 			}
 
 			currentAccountBalance = 0;
 			appServAuditLog.logGivingChange(changeReturned, currentAccountBalance);
-			System.out.println(getCartTotalDollarAmount());
+			System.out.println("$" + String.format("%.2f", getCartTotalDollarAmount()));
 			makeCorrectChange(changeReturned);
-			System.out.println("Your change for this transaction is: " + changeReturned);
+			System.out.println("Your change for this transaction is: $" + (String.format("%.2f", changeReturned)));
+//			System.out.println(String.format("%.2f", changeReturned));
 		}
 
 	}
 
 	public void getCartContents() {
-		System.out.println(cartMap.size() + " different item(s) in cart");
+//		System.out.println(cartMap.size() + " different item(s) in cart");
 		for (Product p : cartMap.keySet()) {
-			System.out.println(p.getName() + " --- " + cartMap.get(p));
-			System.out.println(p.getQuantity() + " " + p.getName() + "(s) left in stock");
+			System.out.println("");
+			System.out.println(p.getName() + ": " + cartMap.get(p));
+//			System.out.println(p.getQuantity() + " " + p.getName() + "(s) left in stock");
+
 		}
-		System.out.println(getCartTotalDollarAmount());
+		System.out.println("");
+		System.out.println("Cart Total: $" + String.format("%.2f", getCartTotalDollarAmount()));
 
 	}
 
@@ -116,7 +145,7 @@ public class Wallet {
 		String[] moneyStringArray = moneyString.split("\\.");
 		Integer wholeDollarsInteger = Integer.parseInt(moneyStringArray[0]);
 		int wholeDollars = wholeDollarsInteger.intValue();
-		Integer centsInteger = Integer.parseInt(moneyStringArray[1]);
+		Integer centsInteger = Integer.parseInt(moneyStringArray[1].substring(0, 2));
 		int cents = centsInteger.intValue();
 		int twenties;
 		int tens;
