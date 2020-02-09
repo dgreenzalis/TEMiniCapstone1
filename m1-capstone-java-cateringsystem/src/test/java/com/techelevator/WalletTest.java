@@ -11,14 +11,14 @@ import org.junit.Assert;   //Use this one...
 
 
 
-public class CustomerBalanceTest {
+public class WalletTest {
 
 	Wallet testDude = new Wallet();
-//	AppService appService = new AppService(testDude);
+	AppService appService = new AppService("cateringSystemJunitTestFile.txt");
 	
 	@Test
 	public void testForDudesBalance() {
-//		Assert.assertEquals(testDude.getCurrentAccountBalance(),appService.appServCustomer.addMoney());
+		Assert.assertEquals(testDude.getCurrentAccountBalance(),appService.appServCustomer.addMoney());
 		
 		Assert.fail();
 	}

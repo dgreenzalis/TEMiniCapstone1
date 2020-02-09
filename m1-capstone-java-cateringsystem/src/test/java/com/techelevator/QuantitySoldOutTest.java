@@ -10,10 +10,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Assert; //Use this one...
 
-//public class QuantitySoldOutTest {
-//
-////	@Test
-////	public void testConfirmSoldOut() {
-////		Assert.assertEquals("SOLD OUT", actual);
-////	}
-////}
+public class QuantitySoldOutTest {
+	
+	public Product testProduct;
+	
+	
+	@Before
+	public void beforeTest() {
+		testProduct= new Product();
+		testProduct.setQuantity(0);
+	}
+
+	@Test
+	public void testConfirmSoldOut() {
+	
+	Assert.assertEquals("SOLD OUT", testProduct.getQuantityToDisplay());
+	}
+}
