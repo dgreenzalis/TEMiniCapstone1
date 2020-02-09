@@ -15,37 +15,40 @@ public class Wallet {
 	private float currentAccountBalance = 0.00f;
 	private AuditLog appServAuditLog = new AuditLog();
 
-	// CONSTRUCTOR
-
 	public float getCurrentAccountBalance() {
 		return currentAccountBalance;
 	}
 
 	public float addMoney() throws IOException {
-		// TODO: limit input to $5000
 
 		System.out.println("You chose Add Money. How much?: ");
-		int inputMoney = Integer.parseInt(customerScanner.nextLine());
+		String inputString = customerScanner.nextLine();
 
-		if (currentAccountBalance + inputMoney > 5000) {
-			System.out.println("Yo, dawg wtf are you doing. thats so much money. chill.");
-		} else {
-			currentAccountBalance += inputMoney;
-			appServAuditLog.logAddMoney(inputMoney, currentAccountBalance);
+		try {
+			int inputMoney = Integer.parseInt(inputString);
+			if(inputMoney < 0) {
+				System.out.println("Can't go negative dawg.");
+				
+			}else if (currentAccountBalance + inputMoney > 5000) {
+				System.out.println("Yo, dawg wtf are you doing. thats so much money. chill.");
+			} else {
+				currentAccountBalance += inputMoney;
+				appServAuditLog.logAddMoney(inputMoney, currentAccountBalance);
+			}
 		}
-
+		catch (NumberFormatException ex) {
+			System.out.println("Those are some mighty weird numbers you're using, try again!");
+		}
 		return currentAccountBalance;
-		// TODO: subtract checkout total from balance
-		// TODO: make sure balance is greater than checkout total
 	}
 
 	public void addToCart(Product productToAdd, int amount) {
-		if (cartMap.containsKey(productToAdd) && (amount) > productToAdd.getQuantity()) {
+
+		if ((amount) > productToAdd.getQuantity()) {
 			System.out.println("Insufficient stock!");
 		} else if (cartMap.containsKey(productToAdd)) {
 //			
 			productToAdd.subtractFromCurrentQuantity(amount);
-			amount = amount;
 			cartMap.put(productToAdd, amount);
 		} else {
 			cartMap.put(productToAdd, new Integer(amount));
@@ -70,9 +73,9 @@ public class Wallet {
 			System.out.println("lol sike, broke turd (add more money or subtract from cart");
 		} else {
 			float changeReturned = currentAccountBalance - getCartTotalDollarAmount();
-			
+
 			float tempCurrentAccountBal = currentAccountBalance;
-			
+
 			for (Product p : cartMap.keySet()) {
 				System.out.println(String.format("%-5s %-5s %-15s %-5s %-5s", cartMap.get(p), p.getType(), p.getName(),
 						p.getPrice(), (p.getPrice() * cartMap.get(p))));
@@ -80,10 +83,11 @@ public class Wallet {
 				appServAuditLog.logItemPurchased(cartMap.get(p), p.getName(), p.getId(),
 						(p.getPrice() * cartMap.get(p)), tempCurrentAccountBal);
 			}
-			
+
 			currentAccountBalance = 0;
 			appServAuditLog.logGivingChange(changeReturned, currentAccountBalance);
 			System.out.println(getCartTotalDollarAmount());
+			makeCorrectChange(changeReturned);
 			System.out.println("Your change for this transaction is: " + changeReturned);
 		}
 
@@ -105,6 +109,44 @@ public class Wallet {
 			currentCartTotal = currentCartTotal + (p.getPrice() * (float) cartMap.get(p));
 		}
 		return currentCartTotal;
+	}
+
+	private void makeCorrectChange(float changeValue) {
+		String moneyString = Float.toString(changeValue);
+		String[] moneyStringArray = moneyString.split("\\.");
+		Integer wholeDollarsInteger = Integer.parseInt(moneyStringArray[0]);
+		int wholeDollars = wholeDollarsInteger.intValue();
+		Integer centsInteger = Integer.parseInt(moneyStringArray[1]);
+		int cents = centsInteger.intValue();
+		int twenties;
+		int tens;
+		int fives;
+		int ones;
+		twenties = wholeDollars / 20;
+		wholeDollars = wholeDollars - (twenties * 20);
+		tens = wholeDollars / 10;
+		wholeDollars = wholeDollars - (tens * 10);
+		fives = wholeDollars / 5;
+		wholeDollars = wholeDollars - (fives * 5);
+		ones = wholeDollars / 1;
+		wholeDollars = wholeDollars - (ones * 1);
+		int quarters;
+		int dimes;
+		int nickels;
+		int pennies;
+		quarters = cents / 25;
+		cents = cents - (quarters * 25);
+		dimes = cents / 10;
+		cents = cents - (dimes * 10);
+		nickels = cents / 5;
+		cents = cents - (nickels * 5);
+		pennies = cents / 1;
+		cents = cents - (pennies * 1);
+		System.out.println(String.format("%-13s | %-13s | %-13s | %-13s", "Twenties: " + twenties, "Tens: " + tens,
+				"Fives: " + fives, "Ones: " + ones));
+		System.out.println(String.format("%-13s | %-13s | %-13s | %-13s", "Quarters: " + quarters, "Dimes: " + dimes,
+				"Nickels: " + nickels, "Pennies: " + pennies));
+
 	}
 
 }

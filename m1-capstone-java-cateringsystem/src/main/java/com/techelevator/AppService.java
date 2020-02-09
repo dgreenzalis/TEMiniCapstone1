@@ -17,13 +17,11 @@ public class AppService {
 	private Wallet appServWallet = new Wallet();
 	private Scanner appServiceScanner = new Scanner(System.in);
 	private CateringInventory cateringInventory = new CateringInventory();
-	// load file in constructor
 	private List<Product> masterInventory;
 //	private List<Product> masterInventory = cateringInventory.generateInventory("cateringSystemJunitTestFile.txt");
 	private OurMenu menu = new OurMenu();
 
 	public void displayCateringItems() {
-		// System.out.println("Please work");
 		System.out.println("");
 		System.out.println("----------------------------------------------------");
 		System.out.println("You chose to display catering items (please appreciate how hard this was to do): ");
@@ -32,7 +30,6 @@ public class AppService {
 		for (Product item : masterInventory) {
 			System.out.println(String.format("%-5s %-20s %-5s %-5s %-5s", item.getId(), item.getName(), item.getPrice(),
 					item.getType(), item.getQuantityToDisplay()));
-			// TODO: format all nice like
 		}
 		System.out.println("");
 		System.out.println("----------------------------------------------------");
@@ -50,7 +47,6 @@ public class AppService {
 				System.out.println(appServWallet.getCurrentAccountBalance());
 				exitSubMenu = false;
 			}
-
 			// Selecting Products
 			else if (subMenuInput.equals("2")) {
 				// TODO: add items to cart
@@ -58,11 +54,7 @@ public class AppService {
 				exitSubMenu = false;
 			} // complete transaction
 			else if (subMenuInput.equals("3")) {
-				// TODO: Checkout
-			
 				appServWallet.checkOut();
-				
-				
 				exitSubMenu = false;
 			} // back to menu
 			else if (subMenuInput.equals("4")) {
@@ -77,51 +69,63 @@ public class AppService {
 	private void selectItems() {
 		boolean selectionExit = false;
 		while (selectionExit == false) {
-			boolean wrongInputConfirmation = true;
-
 			displayCateringItems();
-			System.out.println("Please select item ID or exit:");
-			String userSelection = appServiceScanner.nextLine();
-
-			if (userSelection.equalsIgnoreCase("exit")) {
-				
-				
-				boolean yornLoop = false;
-				while (yornLoop == false) {
-					System.out.println("Would you like to clear your cart? Y or N");
-					String clearYorN = appServiceScanner.nextLine();
-					if (clearYorN.equalsIgnoreCase("Y")) {
-						appServWallet.clearCart();
-						yornLoop = true;
-					} else if (clearYorN.equalsIgnoreCase("N")) {
-						yornLoop = true;
-					} else {
-						System.out.println("What are you even doing?");
+			try {
+				System.out.println("Please select item ID or exit:");
+				String userSelection = appServiceScanner.nextLine();
+				//exit case
+				if (userSelection.equalsIgnoreCase("exit")) {
+					boolean yornLoop = false;
+					while (yornLoop == false) {
+						System.out.println("Would you like to clear your cart? Y or N");
+						String clearYorN = appServiceScanner.nextLine();
+						if (clearYorN.equalsIgnoreCase("Y")) {
+							appServWallet.clearCart();
+							yornLoop = true;
+						} else if (clearYorN.equalsIgnoreCase("N")) {
+							yornLoop = true;
+						} else {
+							System.out.println("What are you even doing?");
+						}
 					}
-				}
-				break;
-
-			}
-			System.out.println("How many would you like?");
-			int selectionQuantity = Integer.parseInt(appServiceScanner.nextLine());
-
-			for (Product p : masterInventory) {
-
-				if (userSelection.equals(p.getId())) {
-					System.out.println(p.getName() + " ADDED");
-					// add to cart
-					appServWallet.addToCart(p, selectionQuantity);
-					appServWallet.getCartContents();
-					wrongInputConfirmation = false;
 					break;
 				}
-			}
-			if (wrongInputConfirmation == true) {
-				System.out.println("Try again idiot!");
+				//verify product exists 
+				int invalidEntryCounter = 0;
+				for (Product p: masterInventory) {
+					if (userSelection.equalsIgnoreCase(p.getId())) {
+						break;
+					}else{ 
+						invalidEntryCounter++;
+					}
+				}
+				if(invalidEntryCounter == masterInventory.size()) {
+					System.out.println("What in tarnation! Pick from the list!");
+					break;
+				}
+				
+				System.out.println("How many would you like?");
+				int selectionQuantity = Integer.parseInt(appServiceScanner.nextLine());
+				if (selectionQuantity < 0) {
+					System.out.println("You want negative items? Cute. Try again!");
+					break;
+				}
+				
+				for (Product p : masterInventory) {
+					
+					if (userSelection.equalsIgnoreCase(p.getId())) {
+						System.out.println(p.getName() + " ADDED");
+						// add to cart
+						appServWallet.addToCart(p, selectionQuantity);
+						appServWallet.getCartContents();
+						break;
+					} 
+				}
+				
+			} catch (NumberFormatException ex) {
+				System.out.println("Yooo!! My guy, use a number!");
 			}
 		}
 	}
 
-	
-	
 }
