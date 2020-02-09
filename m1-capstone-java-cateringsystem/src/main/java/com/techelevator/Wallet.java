@@ -11,59 +11,46 @@ import java.util.Scanner;
 
 public class Wallet {
 
-	// private List<Product> cartList = new ArrayList<Product>();
 	public Map<Product, Integer> cartMap = new HashMap<Product, Integer>();
 	private Scanner customerScanner = new Scanner(System.in);
 	private float currentAccountBalance = 0.00f;
 	private AuditLog appServAuditLog = new AuditLog();
 
+	//redundant method to pull Account Balance (makes usable outside this class? we think? not sure?)
 	public float getCurrentAccountBalance() {
 		return currentAccountBalance;
 	}
-
-//	public static class InputOutPut{
-//		private final Scanner diScanner;
-//		private final PrintStream diOutput;
-//		
-//		public InputOutPut(InputStream in, PrintStream out) {
-//			this.diScanner = new Scanner(in);
-//			this.diOutput = out;
-//		}
-//		
-//		public int ask (String message) {
-//			diOutput.println(message);
-//			return diScanner.nextInt();
-//		}
-//	}
-
+	
+	//method to add money to account. called in AppService. returns current account balance
 	public float addMoney(String inputString) throws IOException {
-
-//		System.out.println("You chose Add Money. How much?: ");
-//		String inputString = customerScanner.nextLine();
 
 		try {
 			int inputMoney = Integer.parseInt(inputString);
+			//if number is negative or over 5000
 			if (inputMoney < 0) {
 				System.out.println("Can't go negative dawg.");
-
 			} else if (currentAccountBalance + inputMoney > 5000) {
 				System.out.println("Yo, dawg wtf are you doing. thats so much money. chill.");
 			} else {
 				currentAccountBalance += inputMoney;
+				//Adds entry to log file for ADDING MONEY
 				appServAuditLog.logAddMoney(inputMoney, currentAccountBalance);
 			}
+		//catch block for if input is non-integer
 		} catch (NumberFormatException ex) {
 			System.out.println("Those are some mighty weird numbers you're using, try again!");
 		}
 		return currentAccountBalance;
 	}
-
+	
+	// adds product referenced from Inventory list to cartMap if sufficient quantity in stock (could have sep into a Cart Class?)
 	public void addToCart(Product productToAdd, int amount) {
 
-		if ((amount) > productToAdd.getQuantity()) {
+		if (amount < 0) {
+			System.out.println("You want negative items? Cute. Try again!");
+		} else if ((amount) > productToAdd.getQuantity()) {
 			System.out.println("Insufficient stock!");
 		} else if (cartMap.containsKey(productToAdd)) {
-//			
 			productToAdd.subtractFromCurrentQuantity(amount);
 			cartMap.put(productToAdd, amount);
 		} else {
@@ -71,18 +58,16 @@ public class Wallet {
 			productToAdd.subtractFromCurrentQuantity(amount);
 		}
 	}
-
-	public void removeFromCart() {
-
-	}
-
+	
+	//empties cartMap's Keys + Values (could have sep into a Cart Class?)
 	public void clearCart() {
 		for (Product p : cartMap.keySet()) {
 			p.setQuantity(50);
 		}
 		cartMap.clear();
 	}
-
+	
+	//references Account Bal vs Cart Total. If sufficient funds, initiate check out. Generates receipt, "gives change", resets Account Balance, clears cart.
 	public void checkOut() {
 		if (currentAccountBalance < getCartTotalDollarAmount()) {
 			System.out.println("lol sike, broke turd (add more money or subtract from cart");
@@ -104,35 +89,35 @@ public class Wallet {
 						"$" + p.getPrice(), "$" + (String.format("%.2f", (p.getPrice() * cartMap.get(p))))));
 
 				tempCurrentAccountBal = tempCurrentAccountBal - (p.getPrice() * cartMap.get(p));
-
+				//create entry in log file for each item bought in current checkout
 				appServAuditLog.logItemPurchased(cartMap.get(p), p.getName(), p.getId(),
 						(p.getPrice() * cartMap.get(p)), tempCurrentAccountBal);
 			}
-
+			
 			currentAccountBalance = 0;
 			appServAuditLog.logGivingChange(changeReturned, currentAccountBalance);
 			System.out.println("$" + String.format("%.2f", getCartTotalDollarAmount()));
 			makeCorrectChange(changeReturned);
 			System.out.println("Your change for this transaction is: $" + (String.format("%.2f", changeReturned)));
-//			System.out.println(String.format("%.2f", changeReturned));
+			clearCart();
 		}
 
 	}
-
+	
+	//Generates report of info for current contents in cartMap (could have sep into a Cart Class?)
 	public void getCartContents() {
 //		System.out.println(cartMap.size() + " different item(s) in cart");
 		for (Product p : cartMap.keySet()) {
 			System.out.println("");
 			System.out.println(p.getName() + ": " + cartMap.get(p));
 //			System.out.println(p.getQuantity() + " " + p.getName() + "(s) left in stock");
-
 		}
 		System.out.println("");
 		System.out.println("Cart Total: $" + String.format("%.2f", getCartTotalDollarAmount()));
-
 	}
 
-	private float getCartTotalDollarAmount() {
+	//calculates cart total dollar amount (could have sep into a Cart Class?)
+	public float getCartTotalDollarAmount() {
 		float currentCartTotal = 0.00f;
 		for (Product p : cartMap.keySet()) {
 			currentCartTotal = currentCartTotal + (p.getPrice() * (float) cartMap.get(p));
@@ -140,12 +125,24 @@ public class Wallet {
 		return currentCartTotal;
 	}
 
+	//breaks down returned change value into smallest amount of physical currency.(She's a BIG guuurl)
 	private void makeCorrectChange(float changeValue) {
 		String moneyString = Float.toString(changeValue);
 		String[] moneyStringArray = moneyString.split("\\.");
 		Integer wholeDollarsInteger = Integer.parseInt(moneyStringArray[0]);
 		int wholeDollars = wholeDollarsInteger.intValue();
-		Integer centsInteger = Integer.parseInt(moneyStringArray[1].substring(0, 2));
+		Integer centsInteger;
+		if (moneyStringArray[1].length() == 2) {
+			centsInteger = Integer.parseInt(moneyStringArray[1]);
+		} else if (moneyStringArray[1].length() == 1) {
+			moneyStringArray[1] = moneyStringArray[1].concat("0");
+			centsInteger = Integer.parseInt(moneyStringArray[1]);
+		} else if (moneyStringArray[1].length() == 0) {
+			moneyStringArray[1] = moneyStringArray[1].concat("00");
+			centsInteger = Integer.parseInt(moneyStringArray[1]);
+		} else {
+			centsInteger = Integer.parseInt(moneyStringArray[1].substring(0, 2));
+		}
 		int cents = centsInteger.intValue();
 		int twenties;
 		int tens;

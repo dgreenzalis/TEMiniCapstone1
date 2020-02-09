@@ -36,6 +36,7 @@ public class Product {
 	public void setType(String type) {
 		this.type = type;
 	}
+	//logic for if quantity is 0 to show SOLD OUT
 	public String getQuantityToDisplay() {
 		String quantityString = Integer.toString(quantity);
 		if(quantity < 1) {

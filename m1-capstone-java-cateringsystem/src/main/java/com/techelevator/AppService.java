@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class AppService {
 
 	public AppService(String inventoryFile) {
-
+		//generate masterInventory for displaying menu from inventory file via constructor
 		masterInventory = cateringInventory.generateInventory(inventoryFile);
 	}
 
@@ -18,9 +18,9 @@ public class AppService {
 	private Scanner appServiceScanner = new Scanner(System.in);
 	private CateringInventory cateringInventory = new CateringInventory();
 	private List<Product> masterInventory;
-//	private List<Product> masterInventory = cateringInventory.generateInventory("cateringSystemJunitTestFile.txt");
 	private OurMenu menu = new OurMenu();
-
+	
+	//printing menu for use in "Display Menu" and "Select Items"
 	public void displayCateringItems() {
 		System.out.println("");
 		System.out.println("----------------------------------------------------");
@@ -34,7 +34,8 @@ public class AppService {
 		System.out.println("");
 		System.out.println("----------------------------------------------------");
 	}
-
+	
+	//Logic for choosing Sub Menu options
 	public void subMenuOptions() throws IOException {
 
 		boolean exitSubMenu = false;
@@ -43,31 +44,30 @@ public class AppService {
 			String subMenuInput = menu.printSubMenu(appServWallet);
 			// Adding money
 			if (subMenuInput.equals("1")) {
-				System.out.println("You chose Add Money. How much?: ");
+				System.out.println("You chose Add Money. How much? (whole dollars please!): ");
 				String inputString = appServiceScanner.nextLine();
 				appServWallet.addMoney(inputString);
 				System.out.println("$" + appServWallet.getCurrentAccountBalance());
 				exitSubMenu = false;
 			}
-			// Selecting Products
 			else if (subMenuInput.equals("2")) {
-				// TODO: add items to cart
 				selectItems();
 				exitSubMenu = false;
-			} // complete transaction
+			} 
 			else if (subMenuInput.equals("3")) {
 				appServWallet.checkOut();
 				exitSubMenu = false;
-			} // back to menu
+			} 
 			else if (subMenuInput.equals("4")) {
 				exitSubMenu = true;
-			} // wrong input
+			} 
 			else {
 				System.out.println("WTF are you doing. Use the prompts idiot.");
 			}
 		}
 	}
-
+	
+	//logic for selecting items (Sub Menu 2) (potentially refactor into Wallet or new Cart Class?)
 	private void selectItems() {
 		boolean selectionExit = false;
 		while (selectionExit == false) {
@@ -75,7 +75,7 @@ public class AppService {
 			try {
 				System.out.println("Please select item ID or exit:");
 				String userSelection = appServiceScanner.nextLine();
-				//exit case
+				//choosing to exit selection menu (W/ option to clear cart)
 				if (userSelection.equalsIgnoreCase("exit")) {
 					boolean yornLoop = false;
 					while (yornLoop == false) {
@@ -92,7 +92,7 @@ public class AppService {
 					}
 					break;
 				}
-				//verify product exists 
+				//Verify product exists 
 				int invalidEntryCounter = 0;
 				for (Product p: masterInventory) {
 					if (userSelection.equalsIgnoreCase(p.getId())) {
@@ -105,32 +105,28 @@ public class AppService {
 					System.out.println("What in tarnation! Pick from the list!");
 					break;
 				}
-				
+				//quantity prompt + negative number safeguard
 				System.out.println("How many would you like?");
 				int selectionQuantity = Integer.parseInt(appServiceScanner.nextLine());
 				if (selectionQuantity < 0) {
 					System.out.println("You want negative items? Cute. Try again!");
 					break;
 				}
-				
+				//Add Items to cart
 				for (Product p : masterInventory) {
-					
 					if (userSelection.equalsIgnoreCase(p.getId())) {
-						System.out.println(p.getName() + " ADDED");
-						// add to cart
+//						System.out.println(p.getName() + " ADDED");
 						System.out.println("");
-						System.out.println("Items in cart:");
 						appServWallet.addToCart(p, selectionQuantity);
+						System.out.println("Items in cart:");
 						appServWallet.getCartContents();
-						
 						break;
 					} 
 				}
-				
+			//String for item quantity safeguard 
 			} catch (NumberFormatException ex) {
 				System.out.println("Yooo!! My guy, use a number!");
 			}
 		}
 	}
-
 }

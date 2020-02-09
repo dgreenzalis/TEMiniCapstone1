@@ -1,11 +1,6 @@
-2020-02-09 14:29:08.723 ADD MONEY: Money Added: $1234.00Current Balance $1234.0
-2020-02-09 14:30:14.550 13    Baked Chicken   E1    Total Item Cost: $115.05 Balance After Item: $1118.95
-2020-02-09 14:30:14.553 32    Punch           B5    Total Item Cost: $28.80 Balance After Item: $1090.15
-2020-02-09 14:30:14.553 GIVE CHANGE: Change Returned: $1090.15  Current Account Balance: $0.0
-2020-02-09 14:39:58.634 ADD MONEY: Money Added: $300.00 Current Balance $300.0
-2020-02-09 14:40:09.483 12    BBQ Ribs        E3    Total Item Cost: $139.80 Balance After Item: $160.20
-2020-02-09 14:40:09.485 GIVE CHANGE: Change Returned: $160.20  Current Account Balance: $0.0
-2020-02-09 14:52:39.928 ADD MONEY: Money Added: $690.00 Current Balance $690.0
-2020-02-09 14:53:24.639 15    Wine            B2    Total Item Cost: $45.75 Balance After Item: $644.25
-2020-02-09 14:53:24.645 GIVE CHANGE: Change Returned: $644.25  Current Account Balance: $0.0
-2020-02-09 15:04:17.999 ADD MONEY: Money Added: $360.00 Current Balance $360.0
+2020-02-09 18:20:26.757 ADD MONEY: Money Added: $123.00 Current Balance $123.0
+2020-02-09 18:23:17.804 ADD MONEY: Money Added: $123.00 Current Balance $123.0
+2020-02-09 18:25:50.557 ADD MONEY: Money Added: $1000.00 Current Balance $1123.0
+2020-02-09 18:25:54.627 17    Baked Chicken   E1    Total Item Cost: $150.45 Balance After Item: $972.55
+2020-02-09 18:25:54.634 50    Soda            B1    Total Item Cost: $75.00 Balance After Item: $897.55
+2020-02-09 18:25:54.636 GIVE CHANGE: Change Returned: $897.55  Current Account Balance: $0.0

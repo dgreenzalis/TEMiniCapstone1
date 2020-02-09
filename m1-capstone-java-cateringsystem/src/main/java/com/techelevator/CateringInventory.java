@@ -10,15 +10,8 @@ import java.util.Scanner;
 
 public class CateringInventory {
 
-//	private Scanner inventoryScanner;
-
-	
-//	public String generateInventoryTWO (String inventoryListNameTwo) {
-		
-		
-//	}
-	
-	
+	//take list from AppService constructor, split each line, apply to new Product, put into List of Products
+	//could have been in AppService, but would have been messier than already is
 	public List<Product> generateInventory(String inventoryListName) {
 
 		File inventoryFile = new File(inventoryListName);
@@ -48,37 +41,5 @@ public class CateringInventory {
 
 		return inventoryList;
 	}
-
-	/*
-	public Map<String, String[]> generateInventory(String inventoryListName) {
-
-		File inventoryFile = new File(inventoryListName);
-
-		Map<String, String[]> inventoryMap = new HashMap<String, String[]>();
-
-		try(Scanner inventoryScanner = new Scanner(inventoryFile)) {
-			
-
-			while (inventoryScanner.hasNextLine()) {
-				String currentLine = inventoryScanner.nextLine();
-				String[] currentLineArray = currentLine.split("\\|");
-
-				String itemId = currentLineArray[0];
-				String[] itemInfoArray = new String[3];
-
-				for (int i = 1; i < 4; i++) {
-					itemInfoArray[i - 1] = currentLineArray[i];
-				}
-				inventoryMap.put(itemId, itemInfoArray);
-			}
-		} catch (FileNotFoundException e) {
-		}
-
-		return inventoryMap;
-	}
-
-	
-	*/
-	
 	
 }

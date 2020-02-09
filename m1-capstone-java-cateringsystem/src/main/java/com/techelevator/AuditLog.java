@@ -7,68 +7,70 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
-public class AuditLog  {
+
+public class AuditLog {
 
 	private LocalDate currentDate;
 	private LocalTime currentTime;
-	private String fileName;
-//date timestamp action
-	//actions = adding money: amount added & total account balance
-//				giving change:
-//				number ordered _ product Name _ product code
-	
-	public File initiateAuditLog(String fileName) throws IOException{
-		
-		this.fileName = fileName;
-		
+	private String fileName = "";
+
+	//Low key doesn't work how we want. Won't update this.fileName? this.fileName isn't working when passed into other audit methods.
+	public void initiateAuditLog(String inputFileName) {
+
+		this.fileName = inputFileName;
+
 		File logFile = new File(fileName);
-		
-		if(logFile.exists()) {
-			
-		}else {
-			logFile.createNewFile();
+
+		if (logFile.exists()) {
+
+		} else {
+			try {
+				logFile.createNewFile();
+			} catch (IOException e) {
+
+			}
 		}
-		return logFile;
+
 	}
-	
-	public void logAddMoney(int inputMoney, float currentAccountBalance ) {
+
+	public void logAddMoney(int inputMoney, float currentAccountBalance) {
 		try {
-			FileWriter auditWriter = new FileWriter("CLI-Audit",true);
-			PrintWriter auditPrinter = new PrintWriter(auditWriter) ;
-			auditPrinter.println(currentDate.now() + " " + currentTime.now() + " ADD MONEY: " + "Money Added: $" + inputMoney + ".00" + " Current Balance $" + currentAccountBalance);
+			FileWriter fileWriter = new FileWriter("CLI-Audit", true);
+			PrintWriter auditPrinter = new PrintWriter(fileWriter);
+			auditPrinter.println(currentDate.now() + " " + currentTime.now() + " ADD MONEY: " + "Money Added: $"
+					+ inputMoney + ".00" + " Current Balance $" + currentAccountBalance);
 			auditPrinter.close();
-		}
-		catch (IOException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	public void logGivingChange(float changeReturned, float currentAccountBalance) {
 		try {
-			FileWriter auditWriter = new FileWriter("CLI-Audit",true);
-			PrintWriter auditPrinter = new PrintWriter(auditWriter) ;
-			auditPrinter.println(currentDate.now() + " " + currentTime.now() + " GIVE CHANGE: Change Returned: $" + String.format("%.2f", changeReturned) +  "  Current Account Balance: $" + currentAccountBalance);
+			FileWriter fileWriter = new FileWriter("CLI-Audit", true);
+			PrintWriter auditPrinter = new PrintWriter(fileWriter);
+			auditPrinter.println(currentDate.now() + " " + currentTime.now() + " GIVE CHANGE: Change Returned: $"
+					+ String.format("%.2f", changeReturned) + "  Current Account Balance: $" + currentAccountBalance);
 			auditPrinter.close();
-		}
-		catch (IOException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-		
 	}
-	
-	public void logItemPurchased(int quantityOrdered, String productName, String productId, float itemTotalCost, float tempAccountBalance) {
+
+	public void logItemPurchased(int quantityOrdered, String productName, String productId, float itemTotalCost,
+			float tempAccountBalance) {
 		try {
-			FileWriter auditWriter = new FileWriter("CLI-Audit",true);
-			PrintWriter auditPrinter = new PrintWriter(auditWriter) ;
-			auditPrinter.println(String.format("%-10s %-10s %-5s %-15s %-5s %-5s %-5s", currentDate.now(), currentTime.now(), quantityOrdered, productName, productId, "Total Item Cost: $" + String.format("%.2f",itemTotalCost), "Balance After Item: $" + String.format("%.2f",tempAccountBalance)));
+			FileWriter fileWriter = new FileWriter("CLI-Audit", true);
+			PrintWriter auditPrinter = new PrintWriter(fileWriter);
+			auditPrinter.println(String.format("%-10s %-10s %-5s %-15s %-5s %-5s %-5s", currentDate.now(),
+					currentTime.now(), quantityOrdered, productName, productId,
+					"Total Item Cost: $" + String.format("%.2f", itemTotalCost),
+					"Balance After Item: $" + String.format("%.2f", tempAccountBalance)));
 			auditPrinter.close();
-		}
-		catch (IOException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 	}
-	
-	
+
 }

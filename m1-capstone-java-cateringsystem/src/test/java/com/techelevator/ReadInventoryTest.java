@@ -1,12 +1,7 @@
 package com.techelevator;
 
 import java.util.List;
-import java.util.Map;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Assert; //Use this one...
 
@@ -20,16 +15,11 @@ public class ReadInventoryTest {
 		for (Product p : testList) {
 			if (p.getId().equals("B1")) {
 				Assert.assertEquals("Monster Energy", p.getName());
-			}else if(p.getId().equals("B3")) {
-				Assert.assertEquals((float)2.55, p.getPrice(), 0.01);
-			}else if(p.getId().equals("D3")) {
+			} else if (p.getId().equals("B3")) {
+				Assert.assertEquals((float) 2.55, p.getPrice(), 0.01);
+			} else if (p.getId().equals("D3")) {
 				Assert.assertEquals("D", p.getType());
 			}
-				
 		}
-
-		
-		
 	}
-
 }

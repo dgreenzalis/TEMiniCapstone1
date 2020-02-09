@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class OurMenu {
 	
 	private Scanner inputScanner = new Scanner(System.in);
-//	Customer customer = new Customer();
 	
+	//prints out our menus
 	public String printMainMenu() {
 		System.out.println("(1) Display Catering Items");
 		System.out.println("(2) Order");
@@ -16,7 +16,6 @@ public class OurMenu {
 	}
 	
 	public String printSubMenu(Wallet wallet) {
-		//TODO: use super for this constructor?
 		
 		System.out.println("");
 		System.out.println("----------------------------------------------------");
